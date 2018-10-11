@@ -30,6 +30,7 @@ function getData() {
                     '<td>' + item.comment1 + '</td>' +
                     '<td>' + item.comment2 + '</td>' +
                     '<td>' + item.comment3 + '</td>' +
+                    '<td>' + item.elapsedMilliSec + '</td>' +
                     '<td>' + item.issuedTime + '</td>' +
                     '</tr>').appendTo($('#todos'));
             });

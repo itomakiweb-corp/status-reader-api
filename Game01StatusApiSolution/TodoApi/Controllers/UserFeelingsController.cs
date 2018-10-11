@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TodoApi.Models;
 
@@ -9,7 +10,7 @@ using TodoApi.Models;
 
 namespace TodoApi.Controllers
 {
-    [Route("api/UserFeelings")]
+    [Route("api/userfeelings")]
     [ApiController]
     public class UserFeelingsController : Controller
     {
@@ -47,26 +48,34 @@ namespace TodoApi.Controllers
 
         // POST api/<controller>
         [HttpPost]
-        public IActionResult Create(UserFeeling item)
+        public ActionResult Create(UserFeeling item)
         {
-            if (item.Id <= 0)
+            try
             {
-                if (_context.UserFeelings.Count() == 0)
+                if (item.Id <= 0)
                 {
-                    item.Id = 1;
-                }
-                else
-                {
-                    var last = _context.UserFeelings.Last();
-                    if (last != null)
+                    if (_context.UserFeelings.Count() == 0)
                     {
-                        item.Id = last.Id++;
+                        item.Id = 1;
+                    }
+                    else
+                    {
+                        var last = _context.UserFeelings.Last();
+                        if (last != null)
+                        {
+                            item.Id = last.Id + 1;
+                        }
                     }
                 }
+                _context.UserFeelings.Add(item);
+                _context.SaveChanges();
+                return Ok();
             }
-            _context.UserFeelings.Add(item);
-            _context.SaveChanges();
-            return Ok();
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+                //return inter
+            }
             //return CreatedAtRoute("GetFeellings", new { id = item.Id }, item);
         }
 
