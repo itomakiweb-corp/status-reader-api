@@ -1,4 +1,5 @@
-﻿const uri = 'api/userfeelings';
+﻿const userdataUri = 'api/userdata/all';
+const feelingUri = 'api/userfeelings/all';
 let todos = null;
 function getCount(data) {
     const el = $('#counter');
@@ -14,15 +15,37 @@ function getCount(data) {
 }
 
 $(document).ready(function () {
-    getData();
+    getUserData();
+    getSteryData();
 });
 
-function getData() {
+function getUserData() {
     $.ajax({
         type: 'GET',
-        url: uri,
+        url: userdataUri,
         success: function (data) {
-            $('#todos').empty();
+            $('#users').empty();
+            getCount(data.length);
+            $.each(data, function (key, item) {
+                $('<tr><td>' + item.id + '</td>' +
+                    '<td>' + item.userId + '</td>' +
+                    '<td>' + item.userName + '</td>' +
+                    '<td>' + item.authType + '</td>' +
+                    '</tr>').appendTo($('#users'));
+            });
+
+            todos = data;
+        }
+    });
+}
+
+
+function getSteryData() {
+    $.ajax({
+        type: 'GET',
+        url: feelingUri,
+        success: function (data) {
+            $('#feelings').empty();
             getCount(data.length);
             $.each(data, function (key, item) {
                 $('<tr><td>' + item.id +'</td>' +
@@ -32,7 +55,7 @@ function getData() {
                     '<td>' + item.comment3 + '</td>' +
                     '<td>' + item.elapsedMilliSec + '</td>' +
                     '<td>' + item.issuedTime + '</td>' +
-                    '</tr>').appendTo($('#todos'));
+                    '</tr>').appendTo($('#feelings'));
             });
 
             todos = data;

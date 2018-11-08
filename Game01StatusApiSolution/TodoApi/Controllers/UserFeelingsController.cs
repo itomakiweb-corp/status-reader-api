@@ -18,15 +18,9 @@ namespace TodoApi.Controllers
         public UserFeelingsController(UserFeelingContext context)
         {
             _context = context;
-
-            //if (_context.UserFeelings.Count() == 0)
-            //{
-            //    _context.UserFeelings.Add(new UserFeeling { Name = "item1" });
-            //    _context.SaveChanges();
-            //}
         }
 
-        // GET: api/<controller>
+        [Route("all")]
         [HttpGet]
         public ActionResult<List<UserFeeling>> GetAll()
         {
@@ -34,42 +28,53 @@ namespace TodoApi.Controllers
             return l;
         }
 
-        // GET api/<controller>/5
-        [HttpGet("{id}", Name = "GetFeelings")]
-        public ActionResult<UserFeeling> GetById(long id)
-        {
-            var item = _context.UserFeelings.Find(id);
-            if (item == null)
-            {
-                return NotFound();
-            }
-            return item;
-        }
-
-        // POST api/<controller>
-        [HttpPost]
-        public ActionResult Create(UserFeeling item)
+        [HttpGet]
+        public ActionResult<UserFeeling> GetByUserId([FromQuery]string userId)
         {
             try
             {
-                if (item.Id <= 0)
+                var result = _context.UserFeelings.FirstOrDefault(data => data.UserId == userId);
+                if (result == null)
                 {
-                    if (_context.UserFeelings.Count() == 0)
-                    {
-                        item.Id = 1;
-                    }
-                    else
-                    {
-                        var last = _context.UserFeelings.Last();
-                        if (last != null)
-                        {
-                            item.Id = last.Id + 1;
-                        }
-                    }
+                    return NotFound();
                 }
-                _context.UserFeelings.Add(item);
+                else
+                {
+                    return Ok(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult<UserScore> Create(UserFeeling item)
+        {
+            try
+            {
+                var data = new UserFeeling
+                {
+                    UserId = item.UserId,
+                    UserName = item.UserName,
+                    Comment1 = item.Comment1,
+                    Comment2 = item.Comment2,
+                    Comment3 = item.Comment3,
+                    IssuedTime = item.IssuedTime,
+                    elapsedMilliSec = item.elapsedMilliSec
+                };
+                _context.UserFeelings.Add(data);
                 _context.SaveChanges();
-                return Ok();
+
+                var score = new UserScore();
+                score.UserId = item.UserId;
+                score.UserName = item.UserName;
+                score.IssuedTime = item.IssuedTime;
+                score.CurrentScore = 1000;
+                score.TotalScore = 10000;
+                score.Rank = 1;
+                return Ok(score);
             }
             catch (Exception ex)
             {

@@ -3,13 +3,14 @@
 
 namespace TodoApi.Models
 {
-    public class Scores
+    public class UserScore
     {
         public long Id { get; set; }
+        public string UserId { get; set; }
         public string UserName { get; set; }
-        public string Comment1 { get; set; }
-        public string Comment2 { get; set; }
-        public string Comment3 { get; set; }
+        public int CurrentScore { get; set; }
+        public int TotalScore { get; set; }
+        public int Rank { get; set; }
         public string IssuedTime { get; set; }
     }
 
@@ -20,6 +21,6 @@ namespace TodoApi.Models
 
         }
 
-        public DbSet<Scores> Scores { get; set; }
+        public DbSet<UserScore> Scores { get; set; }
     }
 }
