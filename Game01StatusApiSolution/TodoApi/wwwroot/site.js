@@ -1,5 +1,7 @@
 ﻿const userdataUri = 'api/userdata/all';
-const feelingUri = 'api/userfeelings/all';
+const feelingUri = 'api/stery/all';
+const seedUri = 'api/seed/all';
+
 let todos = null;
 function getCount(data) {
     const el = $('#counter');
@@ -17,6 +19,7 @@ function getCount(data) {
 $(document).ready(function () {
     getUserData();
     getSteryData();
+    getSeedData();
 });
 
 function getUserData() {
@@ -31,10 +34,11 @@ function getUserData() {
                     '<td>' + item.userId + '</td>' +
                     '<td>' + item.userName + '</td>' +
                     '<td>' + item.authType + '</td>' +
+                    '<td>' + item.createdTime + '</td>' +
+                    '<td>' + item.updatedTime + '</td>' +
                     '</tr>').appendTo($('#users'));
             });
 
-            todos = data;
         }
     });
 }
@@ -45,7 +49,7 @@ function getSteryData() {
         type: 'GET',
         url: feelingUri,
         success: function (data) {
-            $('#feelings').empty();
+            $('#steries').empty();
             getCount(data.length);
             $.each(data, function (key, item) {
                 $('<tr><td>' + item.id +'</td>' +
@@ -54,8 +58,34 @@ function getSteryData() {
                     '<td>' + item.comment2 + '</td>' +
                     '<td>' + item.comment3 + '</td>' +
                     '<td>' + item.elapsedMilliSec + '</td>' +
-                    '<td>' + item.issuedTime + '</td>' +
-                    '</tr>').appendTo($('#feelings'));
+                    '<td>' + item.createdTime + '</td>' +
+                    '</tr>').appendTo($('#steries'));
+            });
+
+            todos = data;
+        }
+    });
+}
+
+function getSeedData() {
+    $.ajax({
+        type: 'GET',
+        url: seedUri,
+        success: function (data) {
+            $('#seeds').empty();
+            getCount(data.length);
+            $.each(data, function (key, item) {
+                $('<tr><td>' + item.id + '</td>' +
+                    '<td>' + item.seedType + '</td>' +
+                    '<td>' + item.seedTitle + '</td>' +
+                    '<td>' + item.seedUrl + '</td>' +
+                    '<td>' + "????" + '</td>' +
+                    //'<td>' + item.keySteries + '</td>' +
+                    '<td>' + item.uploadUserId + '</td>' +
+                    '<td>' + item.uploadUserName + '</td>' +
+                    '<td>' + item.createdTime + '</td>' +
+                    '<td>' + item.updatedTime + '</td>' +
+                    '</tr>').appendTo($('#seeds'));
             });
 
             todos = data;

@@ -8,31 +8,31 @@ using TodoApi.Models;
 
 namespace TodoApi.Controllers
 {
-    [Route("api/userdata")]
+    [Route("api/seed")]
     [ApiController]
-    public class UserDataController : ControllerBase
+    public class SeedController : ControllerBase
     {
-        private readonly UserDataContext _context;
-        public UserDataController(UserDataContext context)
+        private readonly SeedContext _context;
+        public SeedController(SeedContext context)
         {
             _context = context;
         }
 
         [Route("all")]
         [HttpGet]
-        public ActionResult<List<UserData>> GetAll()
+        public ActionResult<List<Seed>> GetAll()
         {
-            var l = _context.UserDatas.ToList();
+            var l = _context.Seeds.ToList();
             return l;
         }
 
         [HttpGet]
-        public ActionResult<UserData> GetByUserId([FromQuery]string authType, [FromQuery]string userId)
+        public ActionResult<List<Seed>> GetByUserId([FromQuery]string userId)
         {
             try
             {
-                var result = _context.UserDatas.FirstOrDefault(
-                    data => data.UserId == userId && data.AuthType == authType);
+                var result = _context.Seeds.Where(
+                    data => data.UploadUserId == userId);
                 if (result == null)
                 {
                     return NotFound();
@@ -49,19 +49,24 @@ namespace TodoApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<UserData> Create(UserData item)
+        public ActionResult<Seed> Create(Seed item)
         {
             try
             {
                 var current = DateTimeOffset.Now.ToString();
-                var data = new UserData {
-                    AuthType = item.AuthType,
-                    UserId = item.UserId,
-                    UserName = item.UserName,
+                var data = new Seed {
+                    SeedType = item.SeedType,
+                    SeedTitle = item.SeedTitle,
+                    SeedUrl = item.SeedUrl,
+                    KeySteries = item.KeySteries,
+                    InputStartTime = item.InputStartTime,
+                    InputEndTime = item.InputEndTime,
                     CreatedTime = current,
-                    UpdatedTime = current
+                    UpdatedTime = current,
+                    UploadUserId = item.UploadUserId,
+                    UploadUserName = item.UploadUserName
                 };
-                var result =_context.UserDatas.Add(data);
+                var result =_context.Seeds.Add(data);
                 _context.SaveChanges();
                 return Ok(result.Entity);
             }

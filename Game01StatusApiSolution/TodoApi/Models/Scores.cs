@@ -3,15 +3,14 @@
 
 namespace TodoApi.Models
 {
-    public class UserScore
+    public class UserScore : BaseEntity
     {
-        public long Id { get; set; }
         public string UserId { get; set; }
         public string UserName { get; set; }
         public int CurrentScore { get; set; }
         public int TotalScore { get; set; }
         public int Rank { get; set; }
-        public string IssuedTime { get; set; }
+        //public string IssuedTime { get; set; }
     }
 
     public class ScoresContext : DbContext

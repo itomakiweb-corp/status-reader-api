@@ -4,11 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TodoApi.Models
 {
-    public class UserData
+    public class UserData : BaseEntity
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long Id { get; set; }
+        //[Key]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //public long Id { get; set; }
         public string AuthType { get; set; }
         public string UserId { get; set; }
         public string UserName { get; set; }

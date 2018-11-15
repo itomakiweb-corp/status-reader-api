@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>User Feelings</title>
+    <title>Data</title>
     <style>
         input[type='submit'], button, [aria-label] {
             cursor: pointer;
@@ -10,6 +10,12 @@
 
         #spoiler {
             display: none;
+        }
+
+        .datadiv {
+            height: 180px;
+            width:auto;
+            overflow:auto;
         }
 
         table {
@@ -26,9 +32,11 @@
 
         td {
             border: 1px solid;
-            padding: 5px;
+            padding: 2px;
             width: 100px;
-            overflow-y:hidden
+            max-height: 20px;
+            overflow-y: auto;
+            text-wrap:avoid;
         }
     </style>
 
@@ -36,49 +44,57 @@
 </head>
 <body>
     <h1>User Datas</h1>
-    <table>
-        <tr>
-            <th>id</th>
-            <th>userId</th>
-            <th>name</th>
-            <th>authType</th>
-        </tr>
-        <tbody id="users"></tbody>
-    </table>
-
-
-
-    <h1>User Feelings</h1>
-    <!--<h3>Add</h3>
-    <form action="javascript:void(0);" method="POST" onsubmit="addItem()">
-        <input type="text" id="add-name" placeholder="add feelings">
-        <input type="submit" value="Add">
-    </form>-->
-    <!--<div id="spoiler">
-        <h3>Edit</h3>
-        <form class="my-form">
-            <input type="hidden" id="edit-id">
-            <input type="checkbox" id="edit-isComplete">
-            <input type="text" id="edit-name">
-            <input type="submit" value="Edit">
-            <a onclick="closeInput()" aria-label="Close">&#10006;</a>
-        </form>
+    <div class="datadiv">
+        <table>
+            <tr>
+                <th>id</th>
+                <th>userId</th>
+                <th>name</th>
+                <th>authType</th>
+                <th>created</th>
+                <th>updated</th>
+            </tr>
+            <tbody id="users"></tbody>
+        </table>
     </div>
 
-    <p id="counter"></p>-->
 
-    <table>
-        <tr>
-            <th>id</th>
-            <th>name</th>
-            <th>comment1</th>
-            <th>comment2</th>
-            <th>comment3</th>
-            <th>elapsedMilliSec</th>
-            <th>issuedTime</th>
-        </tr>
-        <tbody id="feelings"></tbody>
-    </table>
+
+    <h1>Seeds</h1>
+    <div class="datadiv">
+        <table>
+            <tr>
+                <th>id</th>
+                <th>type</th>
+                <th>title</th>
+                <th>url</th>
+                <th>key</th>
+                <th>uploaderId</th>
+                <th>uploaderName</th>
+                <th>created</th>
+                <th>updated</th>
+            </tr>
+            <tbody id="seeds"></tbody>
+        </table>
+    </div>
+
+
+
+    <h1>Steries</h1>
+    <div class="datadiv">
+        <table>
+            <tr>
+                <th>id</th>
+                <th>name</th>
+                <th>comment1</th>
+                <th>comment2</th>
+                <th>comment3</th>
+                <th>elapsedMilliSec</th>
+                <th>created</th>
+            </tr>
+            <tbody id="steries"></tbody>
+        </table>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"
             integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="

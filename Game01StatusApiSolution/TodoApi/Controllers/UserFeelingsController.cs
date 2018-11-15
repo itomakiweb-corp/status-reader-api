@@ -10,7 +10,7 @@ using TodoApi.Models;
 
 namespace TodoApi.Controllers
 {
-    [Route("api/userfeelings")]
+    [Route("api/stery")]
     [ApiController]
     public class UserFeelingsController : Controller
     {
@@ -49,9 +49,11 @@ namespace TodoApi.Controllers
             }
         }
 
+        static private int scoreRank = 0;
         [HttpPost]
         public ActionResult<UserScore> Create(UserFeeling item)
         {
+            var current = DateTimeOffset.Now.ToString();
             try
             {
                 var data = new UserFeeling
@@ -61,8 +63,9 @@ namespace TodoApi.Controllers
                     Comment1 = item.Comment1,
                     Comment2 = item.Comment2,
                     Comment3 = item.Comment3,
-                    IssuedTime = item.IssuedTime,
-                    elapsedMilliSec = item.elapsedMilliSec
+                    CreatedTime = current,
+                    UpdatedTime = current,
+                    ElapsedMilliSec = item.ElapsedMilliSec
                 };
                 _context.UserFeelings.Add(data);
                 _context.SaveChanges();
@@ -70,10 +73,10 @@ namespace TodoApi.Controllers
                 var score = new UserScore();
                 score.UserId = item.UserId;
                 score.UserName = item.UserName;
-                score.IssuedTime = item.IssuedTime;
+                score.CreatedTime = current;
                 score.CurrentScore = 1000;
                 score.TotalScore = 10000;
-                score.Rank = 1;
+                score.Rank = ++scoreRank;
                 return Ok(score);
             }
             catch (Exception ex)
