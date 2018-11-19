@@ -93,6 +93,9 @@ namespace TodoApi.Controllers
                 target.KeySteries = item.KeySteries;
                 target.InputStartTime = item.InputStartTime;
                 target.InputEndTime = item.InputEndTime;
+                target.UploadUserId = item.UploadUserId;
+                //TODO okabe 正規化がすんだらNameは残しちゃだめ。
+                target.UploadUserName = item.UploadUserName;
                 target.UpdatedTime = current;
 
                 var result = _context.Seeds.Update(target);
