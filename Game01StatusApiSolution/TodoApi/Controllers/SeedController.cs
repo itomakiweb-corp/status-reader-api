@@ -75,5 +75,55 @@ namespace TodoApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex);
             }
         }
+
+        [Route("{id}")]
+        [HttpPut]
+        public ActionResult<Seed> Update(long id, Seed item)
+        {
+            try
+            {
+                var target = _context.Seeds.SingleOrDefault(data => data.Id.Equals(id));
+                if (target == null)
+                {
+                    return NotFound();
+                }
+                var current = DateTimeOffset.Now.ToString();
+                target.SeedTitle = item.SeedTitle;
+                target.SeedUrl = item.SeedUrl;
+                target.KeySteries = item.KeySteries;
+                target.InputStartTime = item.InputStartTime;
+                target.InputEndTime = item.InputEndTime;
+                target.UpdatedTime = current;
+
+                var result = _context.Seeds.Update(target);
+                _context.SaveChanges();
+                return Ok(result.Entity);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            }
+        }
+
+        [Route("{id}")]
+        [HttpDelete]
+        public ActionResult<Seed> Delete(long id)
+        {
+            try
+            {
+                var target = _context.Seeds.SingleOrDefault(data => data.Id.Equals(id));
+                if (target == null)
+                {
+                    return NotFound();
+                }
+                var result = _context.Seeds.Remove(target);
+                _context.SaveChanges();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            }
+        }
     }
 }
